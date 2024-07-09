@@ -1,29 +1,36 @@
 import numpy  as np
 import pandas as pd
-import glob
+import sys
 import os
-import re
 
-# Recursively finds all .npy files
-npyFiles = glob.glob("*.npy")
+# file to read in 
+f = sys.argv[1]
 
-# data = np.array([
-#     (1, 'Zayden Jer', 86.5),
-#     (2, 'Luna Marci', 90.0),
-#     (3, 'Kord Shane', 88.0),
-#     (4, 'Coeus Zora', 91.5)
-# ], dtype=[('ID', 'i4'), ('Name', 'U10'), ('Score', 'f4')])
+# file name to output
+fNameCSV = os.path.splitext(f)[0]+'.csv'
+data = np.load(f)
 
-# np.save('data', data)
+try:
 
-for f in npyFiles:
-    fName = os.path.splitext(f)[0]+'.csv'
-    fCSV = np.load(f, allow_pickle = True)
-    try:
-        DF = pd.DataFrame(fCSV)
-        DF.to_csv(fName)
-    except:
-        dt = np.dtype([])
-        print('fail')
-    else: 
-        print('generated ', fName, 'from', f)
+    #check if data can be read normally 
+    DF = pd.DataFrame(data)
+    DF.to_csv(fNameCSV)
+
+except:
+
+    #write to csv file directly with header
+    out = open(fNameCSV, "w")
+    out.write(',Crossing Point,Crossing level,Threshold,Direction,Learning rate') #update this to be dynamic
+    out.write('\n')
+
+    for tup in data:
+        i = 0
+        for item in tup:
+            out.write(str(item)[1:-1]) 
+            i += 1
+            if (i != len(tup)):
+                out.write(',')
+        out.write('\n')
+
+finally: 
+    print('generated ', fNameCSV, 'from', f)
