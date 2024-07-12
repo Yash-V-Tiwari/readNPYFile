@@ -1,4 +1,4 @@
-function data = readMetadataNPY(filename)
+function data = readNPYFile(filename)
 
 npyFilePath = append("'", filename, "'");
 pyrunfile(append("npyReader.py ", npyFilePath));
