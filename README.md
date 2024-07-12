@@ -1,5 +1,5 @@
 # About:
-.npy loader script that can be called from MATLAB.\
+A .npy loader script that can be called from MATLAB.\
 Converts .npy file to .csv then loads it as a Struct in MATLAB.\
 This is mainly used for converting structured array .npy file to a MATLAB struct.
 
